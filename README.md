@@ -1,2 +1,1 @@
-# PracticeJavaEx
-# PracticeJavaEx
+[java Practice]
