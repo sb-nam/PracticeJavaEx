@@ -1,6 +1,6 @@
 [java Practice]
 
-ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
 ```java
 package EXEX;
 
@@ -206,5 +206,6 @@ public interface Reservationable {
 	void cancel(String date,String name);
 
 }
+//--------------------------------------------------------------
 ```
 
