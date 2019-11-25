@@ -209,3 +209,134 @@ public interface Reservationable {
 //--------------------------------------------------------------
 ```
 
+```java
+
+package EXEX;
+
+public abstract class Man {
+
+	String name;
+	int age;
+	String job;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getJob() {
+		return job;
+	}
+	public void setJob(String job) {
+		this.job = job;
+	}
+	
+	abstract public void work();
+	
+}
+```
+```java
+
+package EXEX;
+
+public class CollegeStudent extends Man {
+
+	private String major;
+	
+	public CollegeStudent(String name, int age, String job) {
+		setName(name);
+		setAge(age);
+		setJob(job);
+	}
+	
+	@Override
+	public void work() {
+		System.out.println("학생이 공부를 하다.");
+		
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
+	}
+	
+
+}
+```
+```java
+
+package EXEX;
+
+public class Athlete extends Man {
+
+	String event;
+	
+	public Athlete(String name, int age, String job) {
+		setName(name);
+		setAge(age);
+		setJob(job);
+	}
+	
+	@Override
+	public void work() {
+		System.out.println("운동 선수가 훈련을 하다.");
+		
+	}
+	
+	public String getEvent() {
+		return event;
+	}
+	
+	public void setEvent(String event) {
+		this.event = event;
+	}
+
+}
+```
+```java
+
+package EXEX;
+
+public class ManEx {
+
+	public static void main(String[] args) {
+		
+		Man student = new CollegeStudent("남설빈", 28, "학생");
+		Man athlete = new Athlete("남설빈", 18, "운동선수");
+		
+		((CollegeStudent)student).setMajor("컴퓨터 공학과");
+		((Athlete)athlete).setEvent("유도 선수");
+		
+		printInforMan(student);
+		printInforMan(athlete);
+		
+	}
+
+	private static void printInforMan(Man m) {
+		System.out.println("-------------------------");
+		System.out.println("이름 : " + m.getName());
+		System.out.println("나이 : " + m.getAge());
+		System.out.println("직업 : " + m.getJob());
+		
+		if(m instanceof CollegeStudent) {
+			System.out.println(((CollegeStudent) m).getMajor());
+		}
+		if(m instanceof Athlete) {
+			System.out.println(((Athlete) m).getEvent());
+		}
+	}
+
+}
+//----------------------------------------------------------------------
+```
+
