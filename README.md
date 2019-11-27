@@ -454,3 +454,109 @@ public class FileWriterEx3 {
 }
 //-------------------------------------------------------------- FileWriter
 ```
+
+```java
+
+package Exercise;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class Exercise8_1 {
+
+	public static void main(String[] args) {
+
+		System.out.println("전화번호 입력 프로그램 입니다.");
+
+		Scanner sc = new Scanner(System.in);
+		FileWriter fw = null;
+
+		try {
+			fw = new FileWriter("c:\\Temp\\Info.txt");
+
+			while (true) {
+				System.out.print("이름 전화번호>>>");
+
+				String namePhone = sc.nextLine();
+				if (namePhone.equals("그만")) {
+					System.out.println("c:\\\\Temp\\\\Info.txt에 저장 하였습니다.");
+					break;
+				}
+				fw.write("\r\n");
+				fw.write(namePhone);
+			}
+			fw.close();
+			
+		} catch (IOException e) {
+			System.out.println("입출력 오류");
+		}
+		sc.close();
+
+	}
+
+}
+```
+
+```java
+
+package Exercise;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Exercise8_2 {
+	public static void main(String[] args) {
+
+		final int END = -1;
+
+		FileReader fileReader = null;
+
+		try {
+			fileReader = new FileReader("c:\\Temp\\Info.txt");
+
+			int read;
+			while ((read = fileReader.read()) != END) {
+				System.out.print((char) read);
+			}
+			fileReader.close();
+
+		} catch (IOException e) {
+			System.out.println("입출력 오류");
+		}
+	}
+}
+```
+
+```java
+
+package Exercise;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Exercise8_3 {
+	
+	public static void main(String[] args) {
+
+		final int END = -1;
+
+		FileReader fileReader = null;
+		String path = "c:\\windows\\system.ini";
+		int read;
+
+		try {
+			fileReader = new FileReader(path);
+
+			while ((read = fileReader.read()) != END) {
+				System.out.print(Character.toUpperCase((char) read));
+			}
+			fileReader.close();
+
+		} catch (IOException e) {
+			System.out.println("입출력 오류");
+		}
+	}
+}
+//------------------------------------------------------- FileReader
+```
