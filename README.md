@@ -206,7 +206,7 @@ public interface Reservationable {
 	void cancel(String date,String name);
 
 }
-//--------------------------------------------------------------
+//-------------------------------------------------------------- 
 ```
 
 ```java
@@ -337,6 +337,120 @@ public class ManEx {
 	}
 
 }
-//----------------------------------------------------------------------
+//---------------------------------------------------------------------- 상속
 ```
+```java
 
+package 명품자바Ex;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class FileWriterEx {
+
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+		FileWriter fout = null;
+		int c;
+		try {
+			fout = new FileWriter("c:\\Temp\\test.txt");
+
+			while (true) {
+				String line = sc.nextLine();
+				if (line.length() == 0) {
+					break;
+				}
+				fout.write(line, 0, line.length());
+				fout.write("\r\n", 0, 2);
+			}
+			fout.close();
+
+		} catch (IOException e) {
+			System.out.println("입출력 오류");
+		}
+		sc.close();
+
+	}
+
+}
+
+```
+```java
+
+package 명품자바Ex;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class FileWriterEx2 {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		FileWriter fw = null;
+		System.out.println("이클립스상");
+		int c;
+		
+		try {
+			fw = new FileWriter("c:\\Temp\\test.txt");
+			while(true) {
+				System.out.print("이름 : ");
+				String name = sc.nextLine();
+				if(name.length() == 0)
+					break;
+				System.out.print("전공 : ");
+				String major = sc.nextLine();
+				
+				fw.write("이름은 " + name);
+				fw.write("\r\n", 0, 2);
+				fw.write("전공은 " + major);
+				
+			}
+			fw.close();
+		} catch (IOException e) {
+			System.out.println("입출력 오류");
+		}
+		sc.close();
+	}
+
+}
+```
+```
+package 명품자바Ex;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class FileWriterEx3 {
+
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+		FileWriter fw = null;
+
+		try {
+			fw = new FileWriter("c:\\Temp\\gugudan.txt");
+
+			for (int i = 2; i < 10; i++) {
+				for (int j = 1; j < 10; j++) {
+					fw.write("\r\n");
+					fw.write(i + "단 " + i + " x " + j + " = " + i * j + " ");
+				}
+				fw.write("\r\n");
+				fw.write("----------------");
+			}
+			fw.close();
+		} catch (IOException e) {
+			System.out.println("입출력 오류");
+		}
+		sc.close();
+
+	}
+
+}
+//-------------------------------------------------------------- FileWriter
+```
