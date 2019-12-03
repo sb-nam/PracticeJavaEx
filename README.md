@@ -339,6 +339,7 @@ public class ManEx {
 }
 //---------------------------------------------------------------------- 상속
 ```
+
 ```java
 
 package 명품자바Ex;
@@ -418,7 +419,8 @@ public class FileWriterEx2 {
 
 }
 ```
-```
+
+```java
 package 명품자바Ex;
 
 import java.io.FileWriter;
