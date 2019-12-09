@@ -866,3 +866,142 @@ public class MouseListenerAllEx extends JFrame {
 }
 
 ```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+@SuppressWarnings("serial")
+public class JComponentEx extends JFrame {
+
+	public JComponentEx() {
+		super("JComponent의 공통 메소드 예제");
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		JButton b1 = new JButton();
+		JButton b2 = new JButton();
+		JButton b3 = new JButton();
+		
+		b1.setBackground(Color.YELLOW);
+		b1.setForeground(Color.MAGENTA);
+		b1.setFont(new Font("Arial",Font.ITALIC,20));
+		b2.setEnabled(false);
+		b3.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JButton b = (JButton)e.getSource();
+				JComponentEx frame = (JComponentEx)b.getTopLevelAncestor();
+				frame.setTitle(b.getX() + ", " + b.getY());
+			}
+		});
+		
+		c.add(b1);
+		c.add(b2);
+		c.add(b3);
+		
+		setSize(260, 200);
+		setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		new JComponentEx();
+		
+	}
+
+}
+
+```
+```java
+
+package 명품자바Ex;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
+public class LabelEx extends JFrame {
+
+	public LabelEx() {
+		setTitle("레이블 예제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		JLabel textLabel = new JLabel("사랑합니다.");
+		
+	    ImageIcon beauty = new ImageIcon("images/beauty.jpg");
+	    JLabel imgeLabel = new JLabel(beauty);
+	    
+	    ImageIcon normalIcon = new ImageIcon("images/normalIcon.gif");
+	    JLabel label = new JLabel("보고싶으면 전화하세요", normalIcon,SwingConstants.CENTER);
+	    
+	    c.add(textLabel);
+	    c.add(imgeLabel);
+	    c.add(label);
+	    
+	    setSize(400, 600);
+	    setVisible(true);
+	    
+	}
+	
+	public static void main(String[] args) {
+	
+		new LabelEx();
+
+	}
+
+}
+
+```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+public class ButtonEx extends JFrame{
+
+	public ButtonEx() {
+		setTitle("이미지 버튼 예제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		ImageIcon normalIcon = new ImageIcon("images/normalIcon.gif");
+		ImageIcon rolloverIcon = new ImageIcon("images/rolloverIcon.gif");
+		ImageIcon pressedIcon = new ImageIcon("images/pressedIcon.gif");
+		
+		JButton btn = new JButton("call~", normalIcon);
+		btn.setPressedIcon(pressedIcon);
+		btn.setRolloverIcon(rolloverIcon);
+		c.add(btn);
+		
+		setSize(250,150);
+		setVisible(true);
+		
+	}
+	public static void main(String[] args) {
+		new ButtonEx();
+
+	}
+
+}
+
+```
