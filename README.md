@@ -1005,3 +1005,273 @@ public class ButtonEx extends JFrame{
 }
 
 ```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+
+public class CheckBoxEx extends JFrame {
+
+	public CheckBoxEx() {
+		setTitle("체크 박스 만들기 예제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		ImageIcon cherryIcon = new ImageIcon("images/cherry.jpg");
+		
+		ImageIcon selectedCherryIcon = new ImageIcon("images/selectedCherry.jpg");
+		
+		JCheckBox apple = new JCheckBox("사과");
+		JCheckBox pear = new JCheckBox("배");
+		JCheckBox cherry = new JCheckBox("체리", cherryIcon);
+		
+		cherry.setBorderPainted(true);
+		cherry.setSelectedIcon(selectedCherryIcon);
+		
+		c.add(apple);
+		c.add(pear);
+		c.add(cherry);
+		
+		setSize(350, 250);
+		setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new CheckBoxEx();
+
+	}
+
+}
+```
+
+```java
+package 명품자바Ex;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class CheckBoxItemEventEx extends JFrame {
+
+	private JCheckBox[] fruits = new JCheckBox[3];
+	private String[] names = { "사과", "배", "체리" };
+
+	private JLabel sumLabel;
+
+	public CheckBoxItemEventEx() {
+		setTitle("체크박스와 ItemEvent 예제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+
+		c.add(new JLabel("사과 100원, 배 500원, 체리 20000원"));
+
+		MyItemListener listener = new MyItemListener();
+		for (int i = 0; i < fruits.length; i++) {
+			fruits[i] = new JCheckBox(names[i]);
+			fruits[i].setBorderPainted(true);
+			c.add(fruits[i]);
+			fruits[i].addItemListener(listener);
+		}
+
+		sumLabel = new JLabel("현재 0 원 입니다.");
+		c.add(sumLabel);
+
+		setSize(250, 200);
+		setVisible(true);
+	}
+
+	class MyItemListener implements ItemListener {
+
+		private int sum = 0;
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+
+				if (e.getItem() == fruits[0]) {
+					sum += 100;
+
+				} else if (e.getItem() == fruits[1]) {
+					sum += 500;
+
+				} else {
+					sum += 20000;
+				}
+			
+			} else {
+				if(e.getItem() == fruits[0]) {
+					sum -= 100;
+				
+				} else if(e.getItem() == fruits[1]) {
+					sum -= 500;
+					
+				} else {
+					sum -= 20000;
+				}
+
+			}
+			sumLabel.setText("현재" + sum + "원 입니다.");
+
+		}
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new CheckBoxItemEventEx();
+
+	}
+
+}
+```
+```java
+
+package 명품자바Ex;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JRadioButton;
+
+public class RadioButtonEx extends JFrame {
+	public RadioButtonEx() {
+		setTitle("라디오 버튼 만들기 예제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		ImageIcon cherryIcon = new ImageIcon("images/cherry.jpg");
+		ImageIcon selectedCherryIcon = new ImageIcon("images/selectedCherry.jpg");
+		
+		ButtonGroup g = new ButtonGroup();
+		
+		JRadioButton apple = new JRadioButton("사과");
+		JRadioButton pear = new JRadioButton("배", true);
+		JRadioButton cherry = new JRadioButton("체리", cherryIcon);
+		
+		cherry.setBorderPainted(true);
+		cherry.setSelectedIcon(selectedCherryIcon);
+		
+		g.add(apple);
+		g.add(pear);
+		g.add(cherry);
+		
+		c.add(apple);
+		c.add(pear);
+		c.add(cherry);
+		
+		setSize(350,250);
+		setVisible(true);
+		
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new RadioButtonEx();
+
+	}
+
+}
+
+```
+```java
+
+package 명품자바Ex;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
+
+public class RaidoButtonItemEventEx extends JFrame{
+	private JRadioButton[] radio = new JRadioButton[3];
+	private String[] text = {"사과","배","체리"};
+	private ImageIcon[] image = { 
+			new ImageIcon("images/apple.jpg") ,
+			new ImageIcon("images/pear.jpg") ,
+			new ImageIcon("images/cherry.jpg")
+	};
+	private JLabel imageLabel = new JLabel();
+	
+	public RaidoButtonItemEventEx() {
+		setTitle("라디오 버튼 Item Event 예제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		JPanel radioPanel = new JPanel();
+		radioPanel.setBackground(Color.GRAY);
+		
+		ButtonGroup g = new ButtonGroup();
+		for(int i=0; i<radio.length; i++) {
+			radio[i] = new JRadioButton(text[i]);
+			g.add(radio[i]);
+			radioPanel.add(radio[i]);
+			radio[i].addItemListener(new MyItemListener());
+		}
+		
+		radio[2].setSelected(true);
+		c.add(radioPanel,BorderLayout.NORTH);
+		c.add(imageLabel,BorderLayout.CENTER);
+		imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		setSize(250,250);
+		setVisible(true);
+		
+	}
+
+	class MyItemListener implements ItemListener {
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			// TODO Auto-generated method stub
+			if(e.getStateChange() == ItemEvent.DESELECTED) {
+				return;
+			}
+			if(radio[0].isSelected()) {
+				imageLabel.setIcon(image[0]);
+			} else if(radio[1].isSelected()) {
+				imageLabel.setIcon(image[1]);
+			} else {
+				imageLabel.setIcon(image[2]);
+			}
+		}
+		
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new RaidoButtonItemEventEx();
+
+	}
+
+}
+
+```
