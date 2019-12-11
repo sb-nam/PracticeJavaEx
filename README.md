@@ -1510,3 +1510,281 @@ public class SliderEx extends JFrame {
 }
 
 ```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class GraphicsColorFontEx extends JFrame {
+    private MyPanel panel = new MyPanel();
+    
+    public GraphicsColorFontEx() {
+    	setTitle("Colorm Font 사용 예제");
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setContentPane(panel);
+    	
+    	setSize(350, 470);
+    	setVisible(true);
+    	
+    }
+    
+    class MyPanel extends JPanel {
+    	@Override
+    	protected void paintComponent(Graphics g) {
+    		// TODO Auto-generated method stub
+    		super.paintComponent(g);
+    		g.setColor(Color.BLUE);
+    		g.drawString("I Love Java~~", 30, 30);
+    		g.setColor(new Color(255, 0, 0));
+    		g.setFont(new Font("Arial", Font.ITALIC, 30));
+    		g.drawString("How much?", 30, 60);
+    		g.setColor(new Color(0x00ff00ff));
+    		for(int i=0; i<=5; i++) {
+    			g.setFont(new Font("Jokerman", Font.ITALIC, i*10));
+    			g.drawString("This much!!", 30, 60+i * 60);
+    		}
+    	}
+    }
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new GraphicsColorFontEx();
+
+	}
+
+}
+```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class GraphicsDrawLineEx extends JFrame {
+	private MyPanel panel = new MyPanel();
+	
+	public GraphicsDrawLineEx() {
+		setTitle("drawLine 사용 예제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setContentPane(panel);
+		
+		setSize(200,170);
+		setVisible(true);
+	}
+	
+	class MyPanel extends JPanel {
+		@Override
+		protected void paintComponent(Graphics g) {
+			// TODO Auto-generated method stub
+			super.paintComponent(g);
+			g.setColor(Color.RED);
+			g.drawLine(20, 20, 100, 100);
+		}
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new GraphicsDrawLineEx();
+
+	}
+
+}
+```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class GraphicsDrawStringEx extends JFrame {
+	
+    private MyPanel panel = new MyPanel();
+	
+    public GraphicsDrawStringEx() {
+    	setTitle("drawString 사용 예제");
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setContentPane(panel);
+    	
+    	setSize(250, 200);
+    	setVisible(true);
+    	
+    }
+    
+    class MyPanel extends JPanel {
+    	@Override
+    	protected void paintComponent(Graphics g) {
+    		// TODO Auto-generated method stub
+    		super.paintComponent(g);
+    		g.drawString("자바는 재밌다.~~", 30, 30);
+    		g.drawString("얼마나? 심심하지는 않을정도?", 30,60);
+    	}
+    }
+    
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new GraphicsDrawStringEx();
+		
+
+	}
+
+}
+```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class GraphicsFillEx extends JFrame {
+	private MyPanel panel = new MyPanel();
+	
+	public GraphicsFillEx() {
+		setTitle("fillxxx 사용 예제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setContentPane(panel);
+		
+		setSize(100,350);
+		setVisible(true);
+		
+	}
+	
+	class MyPanel extends JPanel {
+		@Override
+		protected void paintComponent(Graphics g) {
+			// TODO Auto-generated method stub
+			super.paintComponent(g);
+			g.setColor(Color.RED);
+			g.fillRect(10, 10, 50, 50);
+			g.setColor(Color.BLUE);
+			g.fillOval(10, 70, 50, 50);
+			g.setColor(Color.GREEN);
+			g.fillRoundRect(10, 130, 50, 50, 20, 20);
+			g.setColor(Color.MAGENTA);
+			g.fillArc(10, 190, 50, 50, 0, 270);
+			g.setColor(Color.ORANGE);
+			int[] x = {30,10,30,60};
+			int[] y = {250,275,300,275};
+			g.fillPolygon(x,y,4);
+		}
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new GraphicsFillEx();
+
+	}
+
+}
+```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class GraphicsDrawImageEx1 extends JFrame {
+	private MyPanel panel = new MyPanel();
+	
+	public GraphicsDrawImageEx1() {
+		setTitle("원본으로 원하는 위치에 이미지 그리기");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setContentPane(panel);
+		
+		setSize(860, 680);
+		setVisible(true);
+		
+	}
+
+	class MyPanel extends JPanel {
+		private ImageIcon icon = new ImageIcon("images/sunset.jpg");
+		private Image img = icon.getImage();
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			// TODO Auto-generated method stub
+			super.paintComponent(g);
+			
+			g.drawImage(img, 20, 20, this);
+		}
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new GraphicsDrawImageEx1();
+
+	}
+
+}
+```
+
+```java
+
+package 명품자바Ex;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class GraphicsDrawImageEx2 extends JFrame {
+	private MyPanel panel = new MyPanel();
+	
+	public GraphicsDrawImageEx2() {
+		setTitle("패널의 크기에 맞추어 이미지 그리기");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setContentPane(panel);
+		
+		setSize(200, 300);
+		setVisible(true);
+		
+	}
+
+	class MyPanel extends JPanel {
+		private ImageIcon icon = new ImageIcon("images/sunset.jpg");
+		private Image img = icon.getImage();
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			// TODO Auto-generated method stub
+			super.paintComponent(g);
+			
+			g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+		}
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new GraphicsDrawImageEx2();
+
+	}
+
+}
+```
