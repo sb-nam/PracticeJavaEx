@@ -2462,3 +2462,131 @@ public class TabAndThreadEx extends JFrame {
 }
 ```
 
+```java
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+class JDBC_Ex3_run {
+
+	static Connection conn = null;
+	static Statement stmt = null;
+	static ResultSet srs;
+
+	public static Statement getStatement() {
+
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+
+			String url = "jdbc:oracle:thin:@//localhost:1521/xe";
+			String user = "scott";
+			String pwd = "tiger";
+
+			conn = DriverManager.getConnection(url, user, pwd);
+
+			System.out.println("Oracle DB연결에 성공 하였습니다.");
+
+			stmt = conn.createStatement();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 접속실패:" + e.toString());
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("DB 접속실패:" + e.toString());
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("알수 없는 오류");
+		}
+		return stmt;
+
+	}
+
+//	public static Statement getStatement() {
+//		return stmt;
+//	}
+}
+
+@SuppressWarnings("serial")
+class Layout extends JFrame {
+
+	Layout(Statement stmt) {
+		Container c = getContentPane();
+		JPanel panel = new JPanel();
+
+		setTitle("고객정보");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		c.setLayout(new FlowLayout());
+		c.add(panel);
+
+		JLabel la1 = new JLabel("고객 번호 :", JLabel.CENTER);
+		JLabel la2 = new JLabel("이름 :", JLabel.CENTER);
+
+		JTextField tf1 = new JTextField(12);
+		JTextField tf2 = new JTextField(12);
+
+		JButton btn1 = new JButton("입력");
+		JButton btn2 = new JButton("취소");
+
+		panel.setLayout(new GridLayout(3, 2, 1, 1));
+		panel.add(la1);
+		panel.add(tf1);
+
+		panel.add(la2);
+		panel.add(tf2);
+
+		panel.add(btn1);
+		panel.add(btn2);
+
+		btn1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					stmt.executeUpdate("insert into customerinfo (customernum, customername)" + " values('"
+							+ tf1.getText() + "','" + tf2.getText() + "')");
+					System.out.println(tf1.getText() + tf2.getText() + "가 추가되었습니다.");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
+		btn2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				tf1.setText("");
+				tf2.setText("");
+
+			}
+		});
+		setSize(300, 160);
+		setVisible(true);
+
+	}
+}
+
+public class JDBC_Ex3 {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+//		JDBC_Ex3_run.getConnection();
+		new Layout(JDBC_Ex3_run.getStatement());
+
+	}
+
+}
+```
