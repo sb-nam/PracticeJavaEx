@@ -2590,3 +2590,100 @@ public class JDBC_Ex3 {
 
 }
 ```
+
+```java
+
+import java.net.*;
+
+public class ParseURL {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		URL opinion = null;
+		URL homePage = null;
+		
+		try {
+			homePage = new URL("http://daum.net");
+			opinion = new URL(homePage,"opinion/editorial.htm");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("잘못된 URL입니다.");
+			e.printStackTrace();
+		}
+		System.out.println("protocol =" + opinion.getProtocol());
+		System.out.println("host =" + opinion.getHost());
+		System.out.println("port =" + opinion.getPort());
+		System.out.println("path =" + opinion.getPath());
+		System.out.println("filename =" + opinion.getFile());
+		
+
+	}
+
+}
+```
+
+```java
+
+import java.io.*;
+import java.net.*;
+
+public class URLConnectionReader {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		URL aURL;
+		try {
+			aURL = new URL("https://www.daum.net/");
+			URLConnection uc = aURL.openConnection();
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					uc.getInputStream()));
+			String inputLine;
+			
+			while((inputLine = in.readLine()) !=null) {
+				System.out.println(inputLine);
+				in.close();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("URL에서 데이터를 읽는 중 오류가 발생했습니다.");
+			e.printStackTrace();
+		}
+		
+
+	}
+
+}
+```
+```java
+
+import java.net.*;
+import java.io.*;
+
+public class URLRead {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		URL aURL;
+		try {
+			aURL = new URL("https://realestate.daum.net/news/all");
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					aURL.openStream()));
+			String inputLine;
+			
+			while((inputLine = in.readLine()) !=null) {
+				System.out.println(inputLine);
+			}
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+	}
+
+}
+```
+
