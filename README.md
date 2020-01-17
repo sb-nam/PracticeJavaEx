@@ -2687,3 +2687,489 @@ public class URLRead {
 }
 ```
 
+```java
+package DB;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MemberDAO {
+
+	private static Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+
+	void getConnection() throws ClassNotFoundException, SQLException {
+		if (conn == null) {
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String user = "scott";
+			String password = "tiger";
+
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			conn = DriverManager.getConnection(url, user, password);
+		}
+	}
+
+	void dbClose() {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (pstmt != null) {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		conn = null;
+
+	}
+
+	public boolean insertMember(MemberDTO dto) {
+		boolean result = false;
+		try {
+			getConnection();
+
+			String sql = "INSERT INTO Member VALUES (LPAD(seq_member_no.nextval,4,'0'),?,?,?,sysdate)";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getSsn());
+			pstmt.setString(3, dto.getPhoneNum());
+
+			int r = pstmt.executeUpdate();
+
+			if (r > 0)
+				result = true;
+
+		} catch (Exception e) {
+			System.out.println("예외발생:insertMember()=> " + e.getMessage());
+		} finally {
+			dbClose();
+		}
+		return result;
+	}
+
+	public MemberDTO getMember(String no) {
+		MemberDTO dto = null;
+		try {
+			getConnection();
+
+			String sql = "SELECT m_no, m_name, m_ssn, m_phoneNum, m_registdate FROM member WHERE m_no = ?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, no);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				String m_no = rs.getString("m_no");
+				String m_name = rs.getString("m_name");
+				String m_ssn = rs.getString("m_ssn");
+				String m_phoneNum = rs.getString("m_phoneNum");
+				String m_registdate = rs.getDate("m_registdate").toString();
+				dto = new MemberDTO(m_no, m_name, m_ssn, m_phoneNum, m_registdate);
+			}
+
+		} catch (Exception e) {
+			System.out.println("예외발생:deleteMember()=> " + e.getMessage());
+		} finally {
+			dbClose();
+		}
+
+		return dto;
+	}
+
+	public boolean deleteMember(String id) {
+		boolean result = false;
+		try {
+			getConnection();
+
+			String sql = "DELETE FROM member WHERE m_no = ?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			int r = pstmt.executeUpdate();
+
+			if (r > 0)
+				result = true;
+
+		} catch (Exception e) {
+			System.out.println("예외발생:deleteMember()=> " + e.getMessage());
+		} finally {
+			dbClose();
+		}
+		return result;
+	}// deleteMember()--------------
+	
+	public List<MemberDTO> getMemberList(){
+        List<MemberDTO> list = new ArrayList<MemberDTO>();
+       
+        try {
+            getConnection();
+           
+            String sql = "SELECT m_no, m_name, m_ssn, m_phoneNum, m_registdate FROM member ORDER BY m_registdate DESC";
+ 
+            PreparedStatement pstmt = conn.prepareStatement(sql);          
+            ResultSet r = pstmt.executeQuery();
+           
+            while(r.next()) {
+                String m_no = r.getString("m_no");
+                String m_name = r.getString("m_name");
+                String m_ssn = r.getString("m_ssn");
+                String m_phoneNum = r.getString("m_phoneNum");
+                String m_registdate = r.getDate("m_registdate").toString();
+                list.add(new MemberDTO(m_no, m_name, m_ssn, m_phoneNum, m_registdate));
+            }
+           
+        } catch (Exception e) {
+            System.out.println("예외발생:getMemberList()=> "+e.getMessage());
+        }finally{          
+            dbClose();
+        }  
+       
+        return list;
+    }
+	
+	public boolean updateMember(MemberDTO dto){
+	       
+        boolean result = false;            
+        try {
+            getConnection();
+           
+            String sql = "UPDATE member SET m_name=?,m_ssn=?,m_phoneNum=? WHERE m_no=?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+           
+            pstmt.setString(1,dto.getName());
+            pstmt.setString(2,dto.getSsn());
+            pstmt.setString(3,dto.getPhoneNum());
+            pstmt.setString(4,dto.getNo());        
+           
+            int r = pstmt.executeUpdate();
+           
+            if(r>0) result = true;
+           
+        } catch (Exception e) {
+            System.out.println("예외발생:updateMember()=> "+e.getMessage());
+        }finally{          
+            dbClose();
+        }      
+        return result;
+    }
+	
+}
+
+
+package DB;
+
+import java.util.Formatter;
+
+public class MemberDTO {
+	private String no; //회원등록번호
+	private String name; //이름
+	private String ssn; //주민번호
+	private String phoneNum; //연락처
+	private String registdate; //등록일
+
+	public MemberDTO(String name, String ssn, String phoneNum) {
+		this.name = name;
+		this.ssn = ssn;
+		this.phoneNum = phoneNum;
+	}
+	
+	public MemberDTO(String no, String name, String ssn, String phoneNum,
+            String registdate) {
+        super();
+        this.no = no;
+        this.name = name;
+        this.ssn = ssn;
+        this.phoneNum = phoneNum;
+        this.registdate = registdate;
+       
+    }
+
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSsn() {
+		return ssn;
+	}
+
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
+	}
+
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+
+	public String getRegistdate() {
+		return registdate;
+	}
+
+	public void setRegistdate(String registdate) {
+		this.registdate = registdate;
+	}
+	
+	public String toString() {
+        Formatter fm = new Formatter();
+        String meminfo = fm.format("%5s\t  %-7s\t%-16s\t%-14s\t%-14s", no, name,ssn, phoneNum,registdate).toString();
+        return meminfo;
+    }
+   
+ 
+    public String getInfo() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("\r\n");
+        sb.append("[ "+no+ " ] 회원님의 정보====\n");
+        sb.append("이    름 : "+name+"\n");
+        sb.append("주민번호 : "+ssn+"\n");
+        sb.append("전화번호 : "+phoneNum+"\n");
+        sb.append("등록일자 : "+registdate+"\n");
+               
+        return sb.toString();
+    }
+    
+    
+
+}
+
+
+package DB;
+
+import java.util.Scanner;
+
+public class MemberManagement {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		MemberProc mm = new MemberProc();
+
+		while (true) {
+			System.out.println();
+			System.out.println("============== 멤버 관리 프로그램 ==============");
+			System.out.println("1. 회원목록");
+			System.out.println("2. 회원등록   3. 회원삭제   4. 회원정보 수정");
+			System.out.println("5. 종료");
+			System.out.println("============================================");
+			System.out.print("메뉴를 입력하세요 : ");
+			Scanner sc=new Scanner(System.in);
+			int num=0;
+			try {
+			num=sc.nextInt();
+			if(num<0 || num>5) {
+				throw new Exception("입력된 값이 잘못되었습니다. [1-5] 메뉴를 선택해주세요!");
+			}
+			
+			}catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+			
+			switch(num) {
+			case 1:
+				mm.showMemberList();
+				break;
+				
+			case 2:
+				mm.insertMember();
+				break;
+				
+			case 3:
+				mm.deleteMember();
+				break;
+				
+			case 4:
+				mm.updateMember();
+				break;
+				
+			case 5:
+				System.out.println("프로그램을 종료합니다.");
+				System.exit(0);
+				break;
+			}
+		}
+		
+		
+	}
+
+}
+
+
+package DB;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class MemberProc {
+	MemberDAO dao;
+
+	public MemberProc() {
+		dao = new MemberDAO();
+	}
+
+	// 회원등록처리
+	public void insertMember() {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("회원정보를 입력해주세요.");
+		System.out.print("▶이름 : ");
+		String name = sc.nextLine();
+
+		System.out.print("▶주민번호 : ");
+		String ssn = sc.nextLine();
+
+		System.out.print("▶연락처 : ");
+		String phoneNum = sc.nextLine();
+
+		MemberDTO dto = new MemberDTO(name, ssn, phoneNum);
+
+		boolean r = dao.insertMember(dto); // 입력받은 데이터 추가
+
+		if (r) {
+			System.out.println("회원등록이 정상적으로 완료되었습니다.");
+		} else {
+			System.out.println("회원등록이 정상적으로 이루어지지 않았습니다.");
+		}
+	}
+
+	public void deleteMember() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("삭제할 회원의 회원등록번호를 입력해주세요");
+		String no = sc.nextLine();
+		MemberDTO dto = dao.getMember(no);
+		if (dto != null) {
+			System.out.println(dto.getInfo());
+
+			System.out.println("위 회원의 정보를 정말로 삭제하시겠습니까?(Y/N)");
+			String input = sc.nextLine();
+			if (input.equalsIgnoreCase("y")) {
+				boolean r = dao.deleteMember(no);
+
+				if (r) {
+					System.out.println(no + "회원의 정보가 정상적으로 삭제되었습니다.");
+				} else {
+					System.out.println("회원의 정보가 정상적으로 삭제 되지 않았습니다.");
+				}
+			} else {
+				System.out.println("삭제 작업을 취소하였습니다.");
+			}
+		} else {
+
+			System.out.println("입력하신 회원등록번호에 해당하는 회원이 존재하지 않습니다.");
+
+		}
+	}
+
+	public void showMemberList() {
+
+		List<MemberDTO> list = dao.getMemberList();
+
+		System.out.println("                             Member List");
+		System.out.println("============================================================================");
+		if (list != null && list.size() > 0) {
+			System.out.println("reg.No\t  이름 \t\t주민번호\t\t\t연락처\t\t등록일");
+			System.out.println("============================================================================");
+
+			for (MemberDTO dto : list) {
+				System.out.println(dto);
+			}
+
+		} else {
+			System.out.println("저장된 데이터가 없습니다. ");
+		}
+		System.out.println("====================================================================총 "
+				+ ((list == null) ? "0" : list.size()) + " 명=\n");
+	}
+
+	public void updateMember() {
+
+		Scanner scn = new Scanner(System.in);
+		System.out.println("수정할 회원의 회원등록번호를 입력해주세요");
+		System.out.print("▶");
+		String no = scn.nextLine();
+		MemberDTO dto = dao.getMember(no);
+		if (dto != null) {
+
+			System.out.println(dto.getInfo());
+
+			System.out.println("수정작업을 계속하시겠습니까?(Y/N)");
+			String input = scn.nextLine();
+			if (input.equalsIgnoreCase("y")) {
+				System.out.println("##입력을 하시지않으면 기존의 정보가 그대로 유지됩니다.");
+				System.out.print("▶수정할 이름 : ");
+				String name = scn.nextLine();
+				if (name.trim().equals(""))
+					name = dto.getName();
+				System.out.print("▶수정할 주민번호 : ");
+				String ssn = scn.nextLine();
+				if (ssn.trim().equals(""))
+					ssn = dto.getSsn();
+				System.out.print("▶수정할 전화번호 : ");
+				String phoneNum = scn.nextLine();
+				if (phoneNum.trim().equals(""))
+					phoneNum = dto.getPhoneNum();
+
+				dto = new MemberDTO(no, name, ssn, phoneNum, dto.getRegistdate());
+
+				boolean r = dao.updateMember(dto);
+
+				if (r) {
+
+					System.out.println("회원의 정보가 다음과 같이 수정되었습니다.");
+					System.out.println(dto.getInfo());
+
+				} else {
+					System.out.println("회원의 정보가 정상적으로 수정 되지 않았습니다.");
+				}
+
+			} else {
+				System.out.println("수정 작업을 취소하였습니다.");
+			}
+
+		} else {
+
+			System.out.println("입력하신 회원등록번호에 해당하는 회원이 존재하지 않습니다.");
+
+		}
+	}
+
+}
+
+```
